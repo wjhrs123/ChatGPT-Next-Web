@@ -707,7 +707,7 @@ export function Chat() {
   const botRead = (text: string) => {
     if (synth == null) {
       // synth对象为空
-      showToast("当前浏览器不支持语音播放功能", 1000);
+      showToast("当前浏览器不支持语音播放功能");
       return;
     }
     // 如果当前正在播放 则中断当前的播放
@@ -765,11 +765,11 @@ export function Chat() {
     messageContent: string,
   ) => {
     if (paddleSpeechText === "生成中") {
-      showToast("音频正在生成中，请勿重复点击！", 1000);
+      showToast("音频正在生成中，请勿重复点击！");
       return;
     }
     if (paddleSpeechText === "播放中") {
-      showToast("音频正在播放中，请勿重复点击！", 1000);
+      showToast("音频正在播放中，请勿重复点击！");
       return;
     }
 
@@ -805,16 +805,16 @@ export function Chat() {
         // 监听音频播放异常
         audio.addEventListener("error", () => {
           setPaddleSpeechText(speechModelName);
-          showToast("播放异常，请稍后重试！", 1000);
+          showToast("播放异常，请稍后重试！");
         });
       } else {
         setPaddleSpeechText(speechModelName);
-        showToast(data.errorMsg, 1000);
+        showToast(data.errorMsg);
       }
     } catch (error) {
       setPaddleSpeechText(speechModelName);
       console.log(error);
-      showToast("播放异常，请稍后重试！", 1000);
+      showToast("播放异常，请稍后重试！");
     }
   };
 
