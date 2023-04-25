@@ -20,8 +20,12 @@ export const AllLangs = [
   "de",
 ] as const;
 type Lang = (typeof AllLangs)[number];
+export const AllPaddleSpeech = ["ysg", "wjh"] as const;
+type PaddleSpeech = (typeof AllPaddleSpeech)[number];
 
 const LANG_KEY = "lang";
+const VOICE_KEY = "voice";
+const PADDLESPEECH_KEY = "paddleSpeech";
 
 function getItem(key: string) {
   try {
@@ -65,6 +69,29 @@ export function getLang(): Lang {
 
 export function changeLang(lang: Lang) {
   setItem(LANG_KEY, lang);
+  location.reload();
+}
+
+export function getVoice(): any {
+  return getItem(VOICE_KEY);
+}
+
+export function changeVoice(voice: any) {
+  setItem(VOICE_KEY, voice);
+  location.reload();
+}
+
+export function getPaddleSpeech(): PaddleSpeech {
+  const savedPaddleSpeech = getItem(PADDLESPEECH_KEY);
+
+  if (AllPaddleSpeech.includes((savedPaddleSpeech ?? "") as PaddleSpeech)) {
+    return savedPaddleSpeech as PaddleSpeech;
+  }
+  return "ysg";
+}
+
+export function changePaddleSpeech(paddleSpeech: PaddleSpeech) {
+  setItem(PADDLESPEECH_KEY, paddleSpeech);
   location.reload();
 }
 

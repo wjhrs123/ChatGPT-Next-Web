@@ -29,6 +29,10 @@ const DEFAULT_CONFIG = {
 
   disablePromptHint: false,
 
+  speechRate: 1,
+  speechPitch: 1,
+  paddleSpeechEnable: false,
+
   modelConfig: {
     model: "gpt-3.5-turbo" as ModelType,
     temperature: 1,
@@ -107,6 +111,12 @@ export const ModalConfigValidator = {
     return limitNumber(x, -2, 2, 0);
   },
   temperature(x: number) {
+    return limitNumber(x, 0, 2, 1);
+  },
+  speechRate(x: number) {
+    return limitNumber(x, 0, 2, 1);
+  },
+  speechPitch(x: number) {
     return limitNumber(x, 0, 2, 1);
   },
 };

@@ -48,6 +48,11 @@ export function isIOS() {
   return /iphone|ipad|ipod/.test(userAgent);
 }
 
+export function isMobile() {
+  const userAgent = navigator.userAgent.toLowerCase();
+  return /iPhone|iPad|iPod|Android/i.test(userAgent);
+}
+
 export function useMobileScreen() {
   const [isMobileScreen_, setIsMobileScreen] = useState(isMobileScreen());
   useEffect(() => {

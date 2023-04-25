@@ -11,6 +11,7 @@
   min-width: 600px;
   min-height: 480px;
   max-width: 1200px;
+  z-index: 9999;
 
   display: flex;
   overflow: hidden;
@@ -521,6 +522,14 @@
   position: absolute;
   right: 30px;
   bottom: 32px;
+}
+
+.chat-speak {
+  background-color: rgba(219, 223, 227, 1);
+  color: white;
+  position: absolute;
+  right: 110px;
+  bottom: 30px;
 }
 
 @media only screen and (max-width: 600px) {
