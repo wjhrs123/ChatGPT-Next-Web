@@ -45,6 +45,8 @@ import { ErrorBoundary } from "./error";
 import { InputRange } from "./input-range";
 import { useNavigate } from "react-router-dom";
 
+import { Speech } from "./speech";
+
 function UserPromptModal(props: { onClose?: () => void }) {
   const promptStore = usePromptStore();
   const userPrompts = promptStore.getUserPrompts();
@@ -187,43 +189,6 @@ function PasswordInput(props: HTMLProps<HTMLInputElement>) {
   );
 }
 
-// 获取 SpeechSynthesis 语音合成器
-export const synth = getSynth(
-  typeof window !== "undefined" ? window : undefined,
-);
-// 加载可用声音列表
-export const AllVoices = getAllVoices().then(
-  (voices: SpeechSynthesisVoice[]) => {
-    return voices;
-  },
-);
-
-export function getSynth(
-  windowObj: Window | undefined,
-): SpeechSynthesis | null {
-  if (typeof windowObj !== "undefined") {
-    return windowObj.speechSynthesis;
-  }
-  return null;
-}
-function getAllVoices(): Promise<SpeechSynthesisVoice[]> {
-  return new Promise((resolve) => {
-    if (synth == null) {
-      resolve([]);
-    } else {
-      // 监听声音列表变化事件
-      synth.addEventListener("voiceschanged", () => {
-        //const allVoices = synth.getVoices();
-        //这里过滤了只展示国内的声音  如果想要获取所有声音则返回上行代码的allVoices
-        const chineseVoices = synth
-          .getVoices()
-          .filter((voice) => voice.lang.includes("zh-"));
-        resolve(chineseVoices || []);
-      });
-    }
-  });
-}
-
 export function Settings() {
   const navigate = useNavigate();
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
@@ -234,6 +199,8 @@ export function Settings() {
     state.clearAllData,
     state.clearSessions,
   ]);
+
+  const speech = Speech("", "");
 
   const updateStore = useUpdateStore();
   const [checkingUpdate, setCheckingUpdate] = useState(false);
@@ -259,16 +226,6 @@ export function Settings() {
       setLoadingUsage(false);
     });
   }
-
-  const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
-  useEffect(() => {
-    async function fetchVoices() {
-      const allVoices = await AllVoices;
-      setVoices(allVoices);
-    }
-
-    fetchVoices();
-  }, []);
 
   const accessStore = useAccessStore();
   const enabledAccessControl = useMemo(
@@ -724,7 +681,7 @@ export function Settings() {
                 changeVoice(e.target.value as any);
               }}
             >
-              {voices.map((voice) => (
+              {speech.voices.map((voice) => (
                 <option value={voice.name} key={voice.name}>
                   {voice.name}
                 </option>
