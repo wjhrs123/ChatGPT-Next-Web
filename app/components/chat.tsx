@@ -643,119 +643,6 @@ export function Chat() {
     }
   };
 
-  // const botRead = (text: string) => {
-  //   if (synth == null) {
-  //     // synth对象为空
-  //     showToast("当前浏览器不支持语音播放功能");
-  //     return;
-  //   }
-  //   // 如果当前正在播放 则中断当前的播放
-  //   if (synth.speaking) {
-  //     synth.cancel();
-  //   } else {
-  //     // 创建utterance对象 传入的text为要朗读的文本
-  //     let utterance = new SpeechSynthesisUtterance(text);
-  //     // 设置回调函数
-  //     utterance.onstart = () => {
-  //       setSpeechText("结束");
-  //     };
-  //     utterance.onend = () => {
-  //       setSpeechText("播放");
-  //     };
-  //     utterance.onerror = () => {
-  //       setSpeechText("播放");
-  //     };
-  //     const voice = voices.filter(
-  //       (voice) => voice.voiceURI === localStorage.getItem("voice"))[0];
-  //     // 这里的voice一直在 await AllVoices，有值时才设置
-  //     if (voice) {
-  //       // 设置声音
-  //       utterance.voice = voice;
-  //     }
-  //     // 语速
-  //     utterance.rate = config.speechRate;
-  //     // 音调
-  //     utterance.pitch = config.speechPitch;
-  //     // 播放语音
-  //     synth.speak(utterance);
-  //   }
-  // };
-
-  // function getHeaders() {
-  //   const accessStore = useAccessStore.getState();
-  //   let headers: Record<string, string> = {};
-  //
-  //   if (accessStore.enabledAccessControl()) {
-  //     headers["access-code"] = accessStore.accessCode;
-  //   }
-  //
-  //   if (accessStore.token && accessStore.token.length > 0) {
-  //     headers["token"] = accessStore.token;
-  //   }
-  //
-  //   return headers;
-  // }
-
-  // //自定义训练模型语音播报 modelName:声音模型名称  messageId:消息id  messageContent:消息内容
-  // const textToAudio = async (
-  //   modelName: any,
-  //   messageId: any,
-  //   messageContent: string,
-  // ) => {
-  //   if (paddleSpeechText === "生成中") {
-  //     showToast("音频正在生成中，请勿重复点击！");
-  //     return;
-  //   }
-  //   if (paddleSpeechText === "播放中") {
-  //     showToast("音频正在播放中，请勿重复点击！");
-  //     return;
-  //   }
-  //
-  //   try {
-  //     setPaddleSpeechText("生成中");
-  //     const response = await fetch(
-  //       "https://www.chatgpt-wang.cn/api/chatgpt/paddleSpeech/textToAudio",
-  //       {
-  //         method: "POST",
-  //         mode: "cors",
-  //         body: JSON.stringify({ modelName, messageId, messageContent }),
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //           ...getHeaders(),
-  //         },
-  //       },
-  //     );
-  //     const data = await response.json();
-  //     if (data.success) {
-  //       // 获得cos签名url
-  //       const url = data.data;
-  //       // audio设置url属性
-  //       const audio = new Audio(url);
-  //       // 监听音频全部数据已加载完成
-  //       audio.addEventListener("canplaythrough", () => {
-  //         audio.play();
-  //         setPaddleSpeechText("播放中");
-  //       });
-  //       // 监听音频播放结束
-  //       audio.addEventListener("ended", () => {
-  //         setPaddleSpeechText(speechModelName);
-  //       });
-  //       // 监听音频播放异常
-  //       audio.addEventListener("error", () => {
-  //         setPaddleSpeechText(speechModelName);
-  //         showToast("播放异常，请稍后重试！");
-  //       });
-  //     } else {
-  //       setPaddleSpeechText(speechModelName);
-  //       showToast(data.errorMsg);
-  //     }
-  //   } catch (error) {
-  //     setPaddleSpeechText(speechModelName);
-  //     console.log(error);
-  //     showToast("播放异常，请稍后重试！");
-  //   }
-  // };
-
   // Auto focus
   useEffect(() => {
     if (isMobileScreen) return;
@@ -897,29 +784,30 @@ export function Chat() {
                       {/*    {Locale.Chat.Actions.Copy}*/}
                       {/*</div>*/}
 
-                      {config.paddleSpeechEnable && !message.streaming ? (
-                        <div
-                          className={styles["chat-message-top-action"]}
-                          onClick={() =>
-                            speech.textToAudio(
-                              localStorage.getItem("paddleSpeech")
-                                ? localStorage.getItem("paddleSpeech")
-                                : "ysg",
-                              message.id,
-                              message.content,
-                            )
-                          }
-                        >
-                          {speech.paddleSpeechText}
-                        </div>
-                      ) : (
-                        <div
-                          className={styles["chat-message-top-action"]}
-                          onClick={() => speech.botRead(message.content)}
-                        >
-                          {speech.speechText}
-                        </div>
-                      )}
+                      {!message.streaming &&
+                        (config.paddleSpeechEnable ? (
+                          <div
+                            className={styles["chat-message-top-action"]}
+                            onClick={() =>
+                              speech.textToAudio(
+                                localStorage.getItem("paddleSpeech")
+                                  ? localStorage.getItem("paddleSpeech")
+                                  : "ysg",
+                                message.id,
+                                message.content,
+                              )
+                            }
+                          >
+                            {speech.paddleSpeechText}
+                          </div>
+                        ) : (
+                          <div
+                            className={styles["chat-message-top-action"]}
+                            onClick={() => speech.botRead(message.content)}
+                          >
+                            {speech.speechText}
+                          </div>
+                        ))}
                     </div>
                   )}
                   <Markdown
