@@ -19,11 +19,13 @@ export const AllLangs = [
   "jp",
   "de",
 ] as const;
-type Lang = (typeof AllLangs)[number];
+
+export type Lang = (typeof AllLangs)[number];
 export const AllPaddleSpeech = ["ysg", "wjh"] as const;
 type PaddleSpeech = (typeof AllPaddleSpeech)[number];
 
 const LANG_KEY = "lang";
+const DEFAULT_LANG = "en";
 const VOICE_KEY = "voice";
 const PADDLESPEECH_KEY = "paddleSpeech";
 
@@ -45,7 +47,8 @@ function getLanguage() {
   try {
     return navigator.language.toLowerCase();
   } catch {
-    return "cn";
+    console.log("[Lang] failed to detect user lang.");
+    return DEFAULT_LANG;
   }
 }
 
@@ -64,7 +67,7 @@ export function getLang(): Lang {
     }
   }
 
-  return "en";
+  return DEFAULT_LANG;
 }
 
 export function changeLang(lang: Lang) {
