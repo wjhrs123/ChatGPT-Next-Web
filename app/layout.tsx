@@ -46,14 +46,14 @@ export default function RootLayout({
       <body>
         {children}
         <footer>
-          <a href="http://www.beian.gov.cn/" target="_blank">
-            公安备案号暂未审核通过
-          </a>
           <a
-            style={{ marginLeft: "20px" }}
-            href="https://beian.miit.gov.cn/"
+            href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=41090202000539"
             target="_blank"
           >
+            豫公网安备 41090202000539号
+          </a>
+          <span style={{ margin: "0 7px", color: "#ccc" }}>|</span>
+          <a href="https://beian.miit.gov.cn/" target="_blank">
             豫ICP备2023007860号-1
           </a>
         </footer>
