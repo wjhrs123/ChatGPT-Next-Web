@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo, HTMLProps, useRef } from "react";
+import { ModalConfigValidator } from "../store";
 
 import styles from "./settings.module.scss";
 
@@ -7,9 +8,18 @@ import AddIcon from "../icons/add.svg";
 import CloseIcon from "../icons/close.svg";
 import CopyIcon from "../icons/copy.svg";
 import ClearIcon from "../icons/clear.svg";
+import LoadingIcon from "../icons/three-dots.svg";
 import EditIcon from "../icons/edit.svg";
 import EyeIcon from "../icons/eye.svg";
-import { Input, List, ListItem, Modal, PasswordInput, Popover } from "./ui-lib";
+import {
+  Input,
+  List,
+  ListItem,
+  Modal,
+  PasswordInput,
+  Popover,
+  Select,
+} from "./ui-lib";
 import { ModelConfigList } from "./model-config";
 
 import { IconButton } from "./button";
@@ -20,10 +30,10 @@ import {
   useUpdateStore,
   useAccessStore,
   useAppConfig,
-  ModalConfigValidator,
 } from "../store";
 
 import Locale, {
+  ALL_LANG_OPTIONS,
   AllLangs,
   AllPaddleSpeech,
   changeLang,
@@ -366,7 +376,7 @@ export function Settings() {
             }
           >
             {checkingUpdate ? (
-              <div />
+              <LoadingIcon />
             ) : hasNewVersion ? (
               <Link href={UPDATE_URL} target="_blank" className="link">
                 {Locale.Settings.Update.GoToUpdate}
@@ -381,7 +391,7 @@ export function Settings() {
           </ListItem>
 
           <ListItem title={Locale.Settings.SendKey}>
-            <select
+            <Select
               value={config.submitKey}
               onChange={(e) => {
                 updateConfig(
@@ -395,11 +405,11 @@ export function Settings() {
                   {v}
                 </option>
               ))}
-            </select>
+            </Select>
           </ListItem>
 
           <ListItem title={Locale.Settings.Theme}>
-            <select
+            <Select
               value={config.theme}
               onChange={(e) => {
                 updateConfig(
@@ -412,11 +422,11 @@ export function Settings() {
                   {v}
                 </option>
               ))}
-            </select>
+            </Select>
           </ListItem>
 
           <ListItem title={Locale.Settings.Lang.Name}>
-            <select
+            <Select
               value={getLang()}
               onChange={(e) => {
                 changeLang(e.target.value as any);
@@ -424,10 +434,10 @@ export function Settings() {
             >
               {AllLangs.map((lang) => (
                 <option value={lang} key={lang}>
-                  {Locale.Settings.Lang.Options[lang]}
+                  {ALL_LANG_OPTIONS[lang]}
                 </option>
               ))}
-            </select>
+            </Select>
           </ListItem>
 
           <ListItem
@@ -578,9 +588,9 @@ export function Settings() {
         <List>
           <ModelConfigList
             modelConfig={config.modelConfig}
-            updateConfig={(upater) => {
+            updateConfig={(updater) => {
               const modelConfig = { ...config.modelConfig };
-              upater(modelConfig);
+              updater(modelConfig);
               config.update((config) => (config.modelConfig = modelConfig));
             }}
           />
@@ -588,7 +598,7 @@ export function Settings() {
 
         <List>
           <ListItem title={Locale.Settings.SpeechVoice.Name}>
-            <select
+            <Select
               style={{ fontSize: "6px" }}
               value={getVoice()}
               onChange={(e) => {
@@ -600,7 +610,7 @@ export function Settings() {
                   {voice.name}
                 </option>
               ))}
-            </select>
+            </Select>
           </ListItem>
 
           <ListItem
@@ -663,7 +673,7 @@ export function Settings() {
             title={Locale.Settings.PaddleSpeech.Title}
             subTitle={Locale.Settings.PaddleSpeech.SubTitle}
           >
-            <select
+            <Select
               value={getPaddleSpeech()}
               onChange={(e) => {
                 changePaddleSpeech(e.target.value as any);
@@ -674,7 +684,7 @@ export function Settings() {
                   {Locale.Settings.PaddleSpeech.Options[model]}
                 </option>
               ))}
-            </select>
+            </Select>
           </ListItem>
         </List>
 
