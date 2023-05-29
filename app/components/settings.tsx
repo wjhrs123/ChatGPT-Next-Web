@@ -598,7 +598,7 @@ export function Settings() {
 
         <List>
           <ListItem title={Locale.Settings.SpeechVoice.Name}>
-            <select
+            <Select
               style={{ fontSize: "6px" }}
               value={getVoice()}
               onChange={(e) => {
@@ -610,7 +610,7 @@ export function Settings() {
                   {voice.name}
                 </option>
               ))}
-            </select>
+            </Select>
           </ListItem>
 
           <ListItem
@@ -673,7 +673,7 @@ export function Settings() {
             title={Locale.Settings.PaddleSpeech.Title}
             subTitle={Locale.Settings.PaddleSpeech.SubTitle}
           >
-            <select
+            <Select
               value={getPaddleSpeech()}
               onChange={(e) => {
                 changePaddleSpeech(e.target.value as any);
@@ -684,7 +684,7 @@ export function Settings() {
                   {Locale.Settings.PaddleSpeech.Options[model]}
                 </option>
               ))}
-            </select>
+            </Select>
           </ListItem>
         </List>
 
