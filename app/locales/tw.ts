@@ -1,7 +1,7 @@
 import { SubmitKey } from "../store/config";
-import type { LocaleType } from "./index";
+import type { PartialLocaleType } from "./index";
 
-const tw: LocaleType = {
+const tw: PartialLocaleType = {
   WIP: "該功能仍在開發中……",
   Error: {
     Unauthorized: "目前您的狀態是未授權，請前往設定頁面輸入授權碼。",
@@ -152,29 +152,9 @@ const tw: LocaleType = {
       Title: "話題新穎度 (presence_penalty)",
       SubTitle: "值越大，越有可能擴展到新話題",
     },
-    SpeechVoice: {
-      Name: "声音",
-      Options: {},
-    },
-    SpeechRate: {
-      Title: "语速",
-      SubTitle: "语音播放时的速度 正常语速为1.0",
-    },
-    SpeechPitch: {
-      Title: "音调",
-      SubTitle: "语音播放时的音调 正常音调为1.0",
-    },
-    PaddleSpeechEnable: {
-      Title: "开启自定义声音模型播放语音",
-      SubTitle: "启用该功能时，默认替代基础播放功能",
-    },
-    PaddleSpeech: {
-      Title: "声音模型",
-      SubTitle: "使用训练的声音模型进行播放",
-      Options: {
-        ysg: "药水哥",
-        wjh: "王嘉豪",
-      },
+    FrequencyPenalty: {
+      Title: "頻率懲罰度 (frequency_penalty)",
+      SubTitle: "值越大，越有可能降低重複字詞",
     },
   },
   Store: {

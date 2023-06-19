@@ -1,7 +1,7 @@
 import { SubmitKey } from "../store/config";
-import type { LocaleType } from "./index";
+import type { PartialLocaleType } from "./index";
 
-const es: LocaleType = {
+const es: PartialLocaleType = {
   WIP: "En construcción...",
   Error: {
     Unauthorized:
@@ -156,29 +156,10 @@ const es: LocaleType = {
       SubTitle:
         "Un valor mayor aumenta la probabilidad de hablar sobre nuevos temas",
     },
-    SpeechVoice: {
-      Name: "声音",
-      Options: {},
-    },
-    SpeechRate: {
-      Title: "语速",
-      SubTitle: "语音播放时的速度 正常语速为1.0",
-    },
-    SpeechPitch: {
-      Title: "音调",
-      SubTitle: "语音播放时的音调 正常音调为1.0",
-    },
-    PaddleSpeechEnable: {
-      Title: "开启自定义声音模型播放语音",
-      SubTitle: "启用该功能时，默认替代基础播放功能",
-    },
-    PaddleSpeech: {
-      Title: "声音模型",
-      SubTitle: "使用训练的声音模型进行播放",
-      Options: {
-        ysg: "药水哥",
-        wjh: "王嘉豪",
-      },
+    FrequencyPenalty: {
+      Title: "Penalización de frecuencia",
+      SubTitle:
+        "Un valor mayor que disminuye la probabilidad de repetir la misma línea",
     },
   },
   Store: {
