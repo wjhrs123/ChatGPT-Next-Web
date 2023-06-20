@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import Locale from "../locales";
 import { isMobile } from "../utils";
 import { showToast } from "./ui-lib";
-import { useAccessStore, useAppConfig } from "../store";
+import { useAppConfig } from "../store";
+import { getHeaders } from "../client/api";
 
 // 获取 SpeechSynthesis 语音合成器
 export const synth = getSynth(
@@ -40,21 +41,6 @@ function getAllVoices(): Promise<SpeechSynthesisVoice[]> {
       });
     }
   });
-}
-
-function getHeaders() {
-  const accessStore = useAccessStore.getState();
-  let headers: Record<string, string> = {};
-
-  if (accessStore.enabledAccessControl()) {
-    headers["access-code"] = accessStore.accessCode;
-  }
-
-  if (accessStore.token && accessStore.token.length > 0) {
-    headers["token"] = accessStore.token;
-  }
-
-  return headers;
 }
 
 export function Speech(userInput: any, setUserInput: any) {
@@ -140,7 +126,6 @@ export function Speech(userInput: any, setUserInput: any) {
           mode: "cors",
           body: JSON.stringify({ modelName, messageId, messageContent }),
           headers: {
-            "Content-Type": "application/json",
             ...getHeaders(),
           },
         },
@@ -171,7 +156,6 @@ export function Speech(userInput: any, setUserInput: any) {
       }
     } catch (error) {
       setPaddleSpeechText(speechModelName);
-      console.log(error);
       showToast("播放异常，请稍后重试！");
     }
   };
