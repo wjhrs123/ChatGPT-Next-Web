@@ -236,7 +236,7 @@ const cn = {
       Options: {
         ysg: "药水哥",
         wjh: "王嘉豪",
-        lx: "罗翔",
+        mbg: "马保国",
       },
     },
   },
