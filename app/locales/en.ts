@@ -241,6 +241,7 @@ const en: LocaleType = {
         ysg: "药水哥",
         wjh: "王嘉豪",
         mbg: "马保国",
+        lx: "罗翔",
       },
     },
   },

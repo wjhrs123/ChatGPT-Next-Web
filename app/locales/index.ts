@@ -69,7 +69,7 @@ merge(fallbackLang, targetLang);
 
 export default fallbackLang as LocaleType;
 
-export const AllPaddleSpeech = ["ysg", "wjh", "mbg"] as const;
+export const AllPaddleSpeech = ["ysg", "wjh", "mbg", "lx"] as const;
 type PaddleSpeech = (typeof AllPaddleSpeech)[number];
 
 const VOICE_KEY = "voice";
