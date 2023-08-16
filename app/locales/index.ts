@@ -13,6 +13,7 @@ import no from "./no";
 import cs from "./cs";
 import ko from "./ko";
 import ar from "./ar";
+import bn from "./bn";
 import { merge } from "../utils/merge";
 
 import type { LocaleType } from "./cn";
@@ -34,6 +35,7 @@ const ALL_LANGS = {
   cs,
   no,
   ar,
+  bn,
 };
 
 export type Lang = keyof typeof ALL_LANGS;
@@ -56,6 +58,7 @@ export const ALL_LANG_OPTIONS: Record<Lang, string> = {
   cs: "Čeština",
   no: "Nynorsk",
   ar: "العربية",
+  bn: "বাংলা",
 };
 
 const LANG_KEY = "lang";
@@ -141,4 +144,14 @@ export function getPaddleSpeech(): PaddleSpeech {
 export function changePaddleSpeech(paddleSpeech: PaddleSpeech) {
   setItem(PADDLESPEECH_KEY, paddleSpeech);
   location.reload();
+}
+
+export function getISOLang() {
+  const isoLangString: Record<string, string> = {
+    cn: "zh-Hans",
+    tw: "zh-Hant",
+  };
+
+  const lang = getLang();
+  return isoLangString[lang] ?? lang;
 }
