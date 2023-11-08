@@ -10,6 +10,7 @@ const ar: PartialLocaleType = {
   Auth: {
     Title: "تحتاج إلى رمز الوصول",
     Tips: "يرجى إدخال رمز الوصول أدناه",
+    SubTips: "أو أدخل مفتاح واجهة برمجة تطبيقات OpenAI الخاص بك",
     Input: "رمز الوصول",
     Confirm: "تأكيد",
     Later: "لاحقًا",
@@ -100,13 +101,7 @@ const ar: PartialLocaleType = {
   Settings: {
     Title: "الإعدادات",
     SubTitle: "جميع الإعدادات",
-    Actions: {
-      ClearAll: "مسح جميع البيانات",
-      ResetAll: "إعادة تعيين جميع الإعدادات",
-      Close: "إغلاق",
-      ConfirmResetAll: "هل أنت متأكد من رغبتك في إعادة تعيين جميع الإعدادات؟",
-      ConfirmClearAll: "هل أنت متأكد من رغبتك في مسح جميع البيانات؟",
-    },
+
     Lang: {
       Name: "Language", // تنبيه: إذا كنت ترغب في إضافة ترجمة جديدة، يرجى عدم ترجمة هذه القيمة وتركها "Language"
       All: "كل اللغات",
@@ -115,6 +110,11 @@ const ar: PartialLocaleType = {
     FontSize: {
       Title: "حجم الخط",
       SubTitle: "ضبط حجم الخط لمحتوى الدردشة",
+    },
+    InjectSystemPrompts: {
+      Title: "حقن تلميحات النظام",
+      SubTitle:
+        "قم بإضافة تلميحة نظام محاكاة ChatGPT إلى بداية قائمة الرسائل المُطلَبة في كل طلب",
     },
     InputTemplate: {
       Title: "نموذج الإدخال",
@@ -136,8 +136,10 @@ const ar: PartialLocaleType = {
       SubTitle: "معاينة Markdown في فقاعة",
     },
     Mask: {
-      Title: "شاشة تظهر الأقنعة",
-      SubTitle: "عرض شاشة تظهر الأقنعة قبل بدء الدردشة الجديدة",
+      Splash: {
+        Title: "شاشة تظهر الأقنعة",
+        SubTitle: "عرض شاشة تظهر الأقنعة قبل بدء الدردشة الجديدة",
+      },
     },
     Prompt: {
       Disable: {
@@ -231,6 +233,9 @@ ${builtin} مدمجة، ${custom} تم تعريفها من قبل المستخد
   },
   Plugin: {
     Name: "المكوّن الإضافي",
+  },
+  FineTuned: {
+    Sysmessage: "أنت مساعد ي",
   },
   Mask: {
     Name: "الأقنعة",
