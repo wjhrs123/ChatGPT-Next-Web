@@ -12,9 +12,23 @@ import { getClientConfig } from "../config/client";
 
 export function AuthPage() {
   const navigate = useNavigate();
-  const access = useAccessStore();
+  const accessStore = useAccessStore();
 
   const goHome = () => navigate(Path.Home);
+  const goChat = () => navigate(Path.Chat);
+  const resetAccessCode = () => {
+    accessStore.update((access) => {
+      access.token = "";
+      access.accessCode = "";
+    });
+  }; // Reset access code to empty string
+
+  useEffect(() => {
+    if (getClientConfig()?.isApp) {
+      navigate(Path.Settings);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (getClientConfig()?.isApp) {
@@ -36,19 +50,43 @@ export function AuthPage() {
         className={styles["auth-input"]}
         type="password"
         placeholder={Locale.Auth.Input}
-        value={access.accessCode}
+        value={accessStore.accessCode}
         onChange={(e) => {
-          access.updateCode(e.currentTarget.value);
+          accessStore.update(
+            (access) => (access.accessCode = e.currentTarget.value),
+          );
         }}
       />
+      {!accessStore.hideUserApiKey ? (
+        <>
+          <div className={styles["auth-tips"]}>{Locale.Auth.SubTips}</div>
+          <input
+            className={styles["auth-input"]}
+            type="password"
+            placeholder={Locale.Settings.Token.Placeholder}
+            value={accessStore.token}
+            onChange={(e) => {
+              accessStore.update(
+                (access) => (access.token = e.currentTarget.value),
+              );
+            }}
+          />
+        </>
+      ) : null}
 
       <div className={styles["auth-actions"]}>
         <IconButton
           text={Locale.Auth.Confirm}
           type="primary"
-          onClick={goHome}
+          onClick={goChat}
         />
-        <IconButton text={Locale.Auth.Later} onClick={goHome} />
+        <IconButton
+          text={Locale.Auth.Later}
+          onClick={() => {
+            resetAccessCode();
+            goHome();
+          }}
+        />
       </div>
     </div>
   );
