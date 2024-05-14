@@ -57,7 +57,9 @@ import Locale, {
 import { copyToClipboard } from "../utils";
 import Link from "next/link";
 import {
+  Anthropic,
   Azure,
+  Google,
   OPENAI_BASE_URL,
   Path,
   RELEASE_URL,
@@ -275,7 +277,7 @@ function CheckButton() {
   const syncStore = useSyncStore();
 
   const couldCheck = useMemo(() => {
-    return syncStore.coundSync();
+    return syncStore.cloudSync();
   }, [syncStore]);
 
   const [checkState, setCheckState] = useState<
@@ -479,7 +481,7 @@ function SyncItems() {
   const promptStore = usePromptStore();
   const maskStore = useMaskStore();
   const couldSync = useMemo(() => {
-    return syncStore.coundSync();
+    return syncStore.cloudSync();
   }, [syncStore]);
 
   const [showSyncConfigModal, setShowSyncConfigModal] = useState(false);
@@ -593,6 +595,7 @@ export function Settings() {
   const accessStore = useAccessStore();
   const shouldHideBalanceQuery = useMemo(() => {
     const isOpenAiUrl = accessStore.openaiUrl.includes(OPENAI_BASE_URL);
+
     return (
       accessStore.hideBalanceQuery ||
       isOpenAiUrl ||
@@ -645,7 +648,8 @@ export function Settings() {
         navigate(Path.Home);
       }
     };
-    if (clientConfig?.isApp) { // Force to set custom endpoint to true if it's app
+    if (clientConfig?.isApp) {
+      // Force to set custom endpoint to true if it's app
       accessStore.update((state) => {
         state.useCustomConfig = true;
       });
@@ -700,7 +704,9 @@ export function Settings() {
             >
               <div
                 className={styles.avatar}
-                onClick={() => setShowEmojiPicker(true)}
+                onClick={() => {
+                  setShowEmojiPicker(!showEmojiPicker);
+                }}
               >
                 <Avatar avatar={config.avatar} />
               </div>
@@ -968,7 +974,7 @@ export function Settings() {
                     </Select>
                   </ListItem>
 
-                  {accessStore.provider === "OpenAI" ? (
+                  {accessStore.provider === ServiceProvider.OpenAI && (
                     <>
                       <ListItem
                         title={Locale.Settings.Access.OpenAI.Endpoint.Title}
@@ -1007,7 +1013,8 @@ export function Settings() {
                         />
                       </ListItem>
                     </>
-                  ) : (
+                  )}
+                  {accessStore.provider === ServiceProvider.Azure && (
                     <>
                       <ListItem
                         title={Locale.Settings.Access.Azure.Endpoint.Title}
@@ -1060,6 +1067,129 @@ export function Settings() {
                             accessStore.update(
                               (access) =>
                                 (access.azureApiVersion =
+                                  e.currentTarget.value),
+                            )
+                          }
+                        ></input>
+                      </ListItem>
+                    </>
+                  )}
+                  {accessStore.provider === ServiceProvider.Google && (
+                    <>
+                      <ListItem
+                        title={Locale.Settings.Access.Google.Endpoint.Title}
+                        subTitle={
+                          Locale.Settings.Access.Google.Endpoint.SubTitle +
+                          Google.ExampleEndpoint
+                        }
+                      >
+                        <input
+                          type="text"
+                          value={accessStore.googleUrl}
+                          placeholder={Google.ExampleEndpoint}
+                          onChange={(e) =>
+                            accessStore.update(
+                              (access) =>
+                                (access.googleUrl = e.currentTarget.value),
+                            )
+                          }
+                        ></input>
+                      </ListItem>
+                      <ListItem
+                        title={Locale.Settings.Access.Google.ApiKey.Title}
+                        subTitle={Locale.Settings.Access.Google.ApiKey.SubTitle}
+                      >
+                        <PasswordInput
+                          value={accessStore.googleApiKey}
+                          type="text"
+                          placeholder={
+                            Locale.Settings.Access.Google.ApiKey.Placeholder
+                          }
+                          onChange={(e) => {
+                            accessStore.update(
+                              (access) =>
+                                (access.googleApiKey = e.currentTarget.value),
+                            );
+                          }}
+                        />
+                      </ListItem>
+                      <ListItem
+                        title={Locale.Settings.Access.Google.ApiVersion.Title}
+                        subTitle={
+                          Locale.Settings.Access.Google.ApiVersion.SubTitle
+                        }
+                      >
+                        <input
+                          type="text"
+                          value={accessStore.googleApiVersion}
+                          placeholder="2023-08-01-preview"
+                          onChange={(e) =>
+                            accessStore.update(
+                              (access) =>
+                                (access.googleApiVersion =
+                                  e.currentTarget.value),
+                            )
+                          }
+                        ></input>
+                      </ListItem>
+                    </>
+                  )}
+                  {accessStore.provider === ServiceProvider.Anthropic && (
+                    <>
+                      <ListItem
+                        title={Locale.Settings.Access.Anthropic.Endpoint.Title}
+                        subTitle={
+                          Locale.Settings.Access.Anthropic.Endpoint.SubTitle +
+                          Anthropic.ExampleEndpoint
+                        }
+                      >
+                        <input
+                          type="text"
+                          value={accessStore.anthropicUrl}
+                          placeholder={Anthropic.ExampleEndpoint}
+                          onChange={(e) =>
+                            accessStore.update(
+                              (access) =>
+                                (access.anthropicUrl = e.currentTarget.value),
+                            )
+                          }
+                        ></input>
+                      </ListItem>
+                      <ListItem
+                        title={Locale.Settings.Access.Anthropic.ApiKey.Title}
+                        subTitle={
+                          Locale.Settings.Access.Anthropic.ApiKey.SubTitle
+                        }
+                      >
+                        <PasswordInput
+                          value={accessStore.anthropicApiKey}
+                          type="text"
+                          placeholder={
+                            Locale.Settings.Access.Anthropic.ApiKey.Placeholder
+                          }
+                          onChange={(e) => {
+                            accessStore.update(
+                              (access) =>
+                                (access.anthropicApiKey =
+                                  e.currentTarget.value),
+                            );
+                          }}
+                        />
+                      </ListItem>
+                      <ListItem
+                        title={Locale.Settings.Access.Anthropic.ApiVerion.Title}
+                        subTitle={
+                          Locale.Settings.Access.Anthropic.ApiVerion.SubTitle
+                        }
+                      >
+                        <input
+                          type="text"
+                          value={accessStore.anthropicApiVersion}
+                          placeholder={Anthropic.Vision}
+                          onChange={(e) =>
+                            accessStore.update(
+                              (access) =>
+                                (access.anthropicApiVersion =
                                   e.currentTarget.value),
                             )
                           }
@@ -1183,39 +1313,39 @@ export function Settings() {
             ></InputRange>
           </ListItem>
 
-          <ListItem
-            title={Locale.Settings.PaddleSpeechEnable.Title}
-            subTitle={Locale.Settings.PaddleSpeechEnable.SubTitle}
-          >
-            <input
-              type="checkbox"
-              checked={config.paddleSpeechEnable}
-              onChange={(e) =>
-                updateConfig(
-                  (config) =>
-                    (config.paddleSpeechEnable = e.currentTarget.checked),
-                )
-              }
-            ></input>
-          </ListItem>
+          {/*<ListItem*/}
+          {/*  title={Locale.Settings.PaddleSpeechEnable.Title}*/}
+          {/*  subTitle={Locale.Settings.PaddleSpeechEnable.SubTitle}*/}
+          {/*>*/}
+          {/*  <input*/}
+          {/*    type="checkbox"*/}
+          {/*    checked={config.paddleSpeechEnable}*/}
+          {/*    onChange={(e) =>*/}
+          {/*      updateConfig(*/}
+          {/*        (config) =>*/}
+          {/*          (config.paddleSpeechEnable = e.currentTarget.checked),*/}
+          {/*      )*/}
+          {/*    }*/}
+          {/*  ></input>*/}
+          {/*</ListItem>*/}
 
-          <ListItem
-            title={Locale.Settings.PaddleSpeech.Title}
-            subTitle={Locale.Settings.PaddleSpeech.SubTitle}
-          >
-            <Select
-              value={getPaddleSpeech()}
-              onChange={(e) => {
-                changePaddleSpeech(e.target.value as any);
-              }}
-            >
-              {AllPaddleSpeech.map((model) => (
-                <option value={model} key={model}>
-                  {Locale.Settings.PaddleSpeech.Options[model]}
-                </option>
-              ))}
-            </Select>
-          </ListItem>
+          {/*<ListItem*/}
+          {/*  title={Locale.Settings.PaddleSpeech.Title}*/}
+          {/*  subTitle={Locale.Settings.PaddleSpeech.SubTitle}*/}
+          {/*>*/}
+          {/*  <Select*/}
+          {/*    value={getPaddleSpeech()}*/}
+          {/*    onChange={(e) => {*/}
+          {/*      changePaddleSpeech(e.target.value as any);*/}
+          {/*    }}*/}
+          {/*  >*/}
+          {/*    {AllPaddleSpeech.map((model) => (*/}
+          {/*      <option value={model} key={model}>*/}
+          {/*        {Locale.Settings.PaddleSpeech.Options[model]}*/}
+          {/*      </option>*/}
+          {/*    ))}*/}
+          {/*  </Select>*/}
+          {/*</ListItem>*/}
         </List>
 
         {shouldShowPromptModal && (

@@ -3,7 +3,7 @@ import Locale from "../locales";
 import { isMobile } from "../utils";
 import { showToast } from "./ui-lib";
 import { useAppConfig } from "../store";
-import { getHeaders } from "../client/api";
+import { getHeaders, MultimodalContent } from "../client/api";
 
 // 获取 SpeechSynthesis 语音合成器
 export const synth = getSynth(
@@ -106,7 +106,7 @@ export function Speech(userInput: any, setUserInput: any) {
   const textToAudio = async (
     modelName: any,
     messageId: any,
-    messageContent: string,
+    messageContent: string | MultimodalContent[],
   ) => {
     if (paddleSpeechText === "生成中") {
       showToast("音频正在生成中，请勿重复点击！");
@@ -161,7 +161,7 @@ export function Speech(userInput: any, setUserInput: any) {
   };
 
   // 语音播报
-  const botRead = (text: string) => {
+  const botRead = (text: string | MultimodalContent[]) => {
     if (synth == null) {
       // synth对象为空
       showToast("当前浏览器不支持语音播放功能");
@@ -172,7 +172,7 @@ export function Speech(userInput: any, setUserInput: any) {
       synth.cancel();
     } else {
       // 创建utterance对象 传入的text为要朗读的文本
-      let utterance = new SpeechSynthesisUtterance(text);
+      let utterance = new SpeechSynthesisUtterance(JSON.stringify({ text }));
       // 设置回调函数
       utterance.onstart = () => {
         setSpeechText("结束");
